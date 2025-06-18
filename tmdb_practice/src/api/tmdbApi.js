@@ -33,4 +33,15 @@ export const getMovieDetails = async (movieId) => {
    return response
 }
 
+// 영화 장르 리스트
+export const getMovieGenres = async () => {
+   //https://api.themoviedb.org/3/genre/movie/list?language=ko-KR
+   const response = await tmdbApi.get(`genre/movie/list`, {
+      params: {
+         language: 'ko-KR',
+      },
+   })
+   return response
+}
+
 export default tmdbApi

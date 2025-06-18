@@ -25,6 +25,9 @@ function MovieList() {
                </Link>
             ))}
          </ul>
+         <div>
+            <Link to={'genre/movie/list'}>Genres</Link>
+         </div>
       </div>
    )
 }

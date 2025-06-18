@@ -1,9 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { getMovies } from '../api/tmdbApi'
 import { getMovieDetails } from '../api/tmdbApi'
+import { getMovieGenres } from '../api/tmdbApi'
 
 export const fetchMovies = createAsyncThunk('movies/fetchMovies', async () => {
    const response = await getMovies()
+   console.log(response)
    return response.data.results
 })
 
@@ -12,10 +14,17 @@ export const fetchMovieDetails = createAsyncThunk('movies/fetchMovieDetails', as
    return response.data
 })
 
+export const fetchMovieGenres = createAsyncThunk('movies/fetchMovieGenres', async () => {
+   const response = await getMovieGenres()
+   console.log(response)
+   return response.data.genres
+})
+
 const moviesSlice = createSlice({
    name: 'movies',
    initialState: {
       movies: [],
+      movieGenres: [],
       movieDetails: null,
       loading: false,
       error: null,
@@ -44,6 +53,18 @@ const moviesSlice = createSlice({
             state.movieDetails = action.payload
          })
          .addCase(fetchMovieDetails.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.error.message
+         })
+         .addCase(fetchMovieGenres.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(fetchMovieGenres.fulfilled, (state, action) => {
+            state.loading = false
+            state.movieGenres = action.payload
+         })
+         .addCase(fetchMovieGenres.rejected, (state, action) => {
             state.loading = false
             state.error = action.error.message
          })
